@@ -9,8 +9,8 @@ public class Application {
 
     public static void main(String... args) {
         com.km.painter.Painter painter = new Painter();
-        MainFrame frame = new MainFrame(painter);
         Game game = new Game(painter);
+        MainFrame frame = new MainFrame(painter, game);
         SwingUtilities.invokeLater(frame::setUp);
         new Thread(game::start).start();
     }
