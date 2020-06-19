@@ -8,14 +8,19 @@ import java.awt.event.KeyListener;
 import static java.awt.event.KeyEvent.*;
 
 public class Game implements KeyListener {
+    private static final int TICK = 50;
+    private static final int WIDTH = 12;
+    private static final int HEIGHT = 18;
+    private static final int BASE_PACE = 26;
     private final GameStatePainter painter;
     private final GameState gameState;
+    private final Controller controller;
     private boolean pause = true;
-    private Controller controller;
+    private int counter = 0;
 
     public Game(GameStatePainter painter) {
         this.painter = painter;
-        gameState = new GameState();
+        gameState = new GameState(WIDTH, HEIGHT);
         controller = new Controller(gameState);
     }
 
@@ -25,22 +30,37 @@ public class Game implements KeyListener {
             timeTick();
             if (pause)
                 continue;
-            controller.updateState();
+            updateState();
             painter.paint(gameState);
+        }
+    }
+
+    private void updateState() {
+        counter++;
+        if (counter % getPace() == 0) {
+            if (controller.lowerShape() == 0) {
+                // TODO check if row may be removed from the board
+                // TODO update score
+                // TODO update level
+                controller.createShape();
+            }
         }
     }
 
     private void setUp() {
         controller.createShape();
-        gameState.nextLevel();
     }
 
     private void timeTick() {
         try {
-            Thread.sleep(Controller.TICK);
+            Thread.sleep(TICK);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getPace() {
+        return BASE_PACE - gameState.getLevel();
     }
 
     @Override

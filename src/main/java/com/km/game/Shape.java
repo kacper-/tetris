@@ -2,10 +2,11 @@ package com.km.game;
 
 public class Shape {
     private ShapeType type;
-    private int rotation = 0;
+    private int[] data;
 
     Shape(ShapeType type) {
         this.type = type;
+        data = type.getData();
     }
 
     ShapeType getType() {
@@ -13,14 +14,26 @@ public class Shape {
     }
 
     public int[] getData() {
-        return type.getData();
-    }
-
-    void turnRight() {
-        rotation = (rotation + 1) % 4;
+        return data;
     }
 
     void turnLeft() {
-        rotation = (rotation - 1) % 4;
+        int[] turned = new int[data.length];
+        for (int y = 0; y < type.getSize(); y++) {
+            for (int x = 0; x < type.getSize(); x++) {
+                turned[12 + y - (type.getSize() * x)] = data[x + y * type.getSize()];
+            }
+        }
+        data = turned;
+    }
+
+    void turnRight() {
+        int[] turned = new int[data.length];
+        for (int y = 0; y < type.getSize(); y++) {
+            for (int x = 0; x < type.getSize(); x++) {
+                turned[(type.getSize() - y - 1) + x * type.getSize()] = data[x + y * type.getSize()];
+            }
+        }
+        data = turned;
     }
 }

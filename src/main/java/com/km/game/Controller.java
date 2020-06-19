@@ -3,9 +3,7 @@ package com.km.game;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
-    static final int TICK = 50;
     private final GameState gameState;
-    private int counter = 0;
 
     Controller(GameState gameState) {
         this.gameState = gameState;
@@ -24,21 +22,25 @@ public class Controller {
     }
 
     void moveRight() {
-
+        gameState.setShapeX(gameState.getShapeX() + 1);
     }
 
     void moveLeft() {
-
+        gameState.setShapeX(gameState.getShapeX() - 1);
     }
 
-    public void createShape() {
+    void createShape() {
         ShapeType type = ShapeType.values()[ThreadLocalRandom.current().nextInt(ShapeType.values().length)];
+        // TODO save old shape to board
         gameState.setShape(new Shape(type));
+        gameState.setShapeX((gameState.getMaxX() / 2) - 2);
+        gameState.setShapeY(0);
     }
 
-    public void updateState() {
-        counter++;
-        if (counter % 20 == 0)
-            gameState.nextLevel();
+    int lowerShape() {
+        gameState.setShapeY(gameState.getShapeY() + 1);
+        // TODO return 0 in case of collision
+        return 1;
     }
+
 }
