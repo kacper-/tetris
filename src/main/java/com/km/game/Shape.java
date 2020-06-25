@@ -18,6 +18,7 @@ public class Shape {
     }
 
     void turnLeft() {
+        // TODO implement pre-calculated versions of turned shape instead of calculating rotation
         int[] turned = new int[data.length];
         for (int y = 0; y < type.getSize(); y++) {
             for (int x = 0; x < type.getSize(); x++) {

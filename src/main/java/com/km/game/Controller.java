@@ -4,9 +4,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
     private final GameState gameState;
+    private final Collision collision;
 
     Controller(GameState gameState) {
         this.gameState = gameState;
+        this.collision = new Collision(gameState);
     }
 
     void turnLeft() {
@@ -38,9 +40,11 @@ public class Controller {
     }
 
     int lowerShape() {
-        gameState.setShapeY(gameState.getShapeY() + 1);
-        // TODO return 0 in case of collision
-        return 1;
+        if (collision.canLower()) {
+            gameState.setShapeY(gameState.getShapeY() + 1);
+            return 1;
+        }
+        return 0;
     }
 
 }
